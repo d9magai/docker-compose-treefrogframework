@@ -13,3 +13,5 @@
 *.box
 
 # End of https://www.gitignore.io/api/vagrant
+
+.env
