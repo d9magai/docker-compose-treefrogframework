@@ -1,0 +1,40 @@
+version: '3'
+services:
+    db:
+        image: mysql:5.7
+        environment:
+            - MYSQL_USER=user
+            - MYSQL_PASSWORD=password
+            - MYSQL_ROOT_PASSWORD=secret
+            - MYSQL_DATABASE=db
+
+    mongo:
+        image: mongo:3.6.13
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=root
+            - MONGO_INITDB_ROOT_PASSWORD=password
+            - MONGO_INITDB_DATABASE=mdb
+
+    app:
+        image: d9magai/treefrogframework
+        command: sh -c 'make && rm -f tmp/treefrog.pid && treefrog -e dev'
+        working_dir: /srv
+        tty: true
+        volumes:
+            - document_root:/srv
+            - /etc/passwd:/etc/passwd:ro
+            - /etc/group:/etc/group:ro
+        user: "${uid}:${gid}"
+        depends_on:
+            - db
+            - mongo
+        ports:
+            - "0.0.0.0:8800:8800"
+
+volumes:
+    document_root:
+        driver_opts:
+            type: none
+            device: ${PWD}/app/
+            o: bind
+
