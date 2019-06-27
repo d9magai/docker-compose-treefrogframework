@@ -8,6 +8,7 @@ sudo gpasswd -a $USER docker
 sudo systemctl restart docker
 sudo systemctl enable docker
 cd #{workdir}
+ln -snf .env.example .env
 SCRIPT
 
 # -*- coding: utf-8 -*-
